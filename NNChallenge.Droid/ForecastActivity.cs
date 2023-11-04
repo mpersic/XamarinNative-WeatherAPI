@@ -1,11 +1,21 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using Autofac;
+using NNChallenge.Data;
+using NNChallenge.DI;
+using NNChallenge.Interfaces;
+using NNChallenge.ViewModels;
+using Square.Picasso;
+using Xamarin.Essentials;
 
 namespace NNChallenge.Droid
 {
@@ -14,41 +24,64 @@ namespace NNChallenge.Droid
     {
         private RecyclerView recyclerView;
         private WeatherForecastAdapter adapter;
+        private ForecastViewModel viewModel;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_forecast);
+
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             recyclerView.SetLayoutManager(new LinearLayoutManager(this));
-
             adapter = new WeatherForecastAdapter(this);
             recyclerView.SetAdapter(adapter);
 
+            viewModel = DIContainer.Instance.Resolve<ForecastViewModel>();
             if (Intent.HasExtra("SelectedLocation"))
             {
-                string selectedLocation = Intent.GetStringExtra("SelectedLocation");
-                var vs = new NNChallenge.Interfaces.OpenWeatherApi(city: selectedLocation);
-                var current = await vs.GetCurrentWeather();
-                adapter.SetData(current);
-                await vs.GetDailyWeather();
-                // Now you can use the selectedLocation in your ForecastActivity.
-            }
-            // Handle the case where the extra is not found if needed.
-        }
+                var selectedLocation = Intent.GetStringExtra("SelectedLocation");
+                if (Helper.IsInternetConnectionAvailable(this))
+                {
+                    try
+                    {
+                        await viewModel.GetWeatherForecast(selectedLocation);
+                        var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
 
+                        if (selectedDaysWeatherData.Count == 0)
+                        {
+                            Helper.ShowToast(this, "No items in the list.");
+                        }
+                        else
+                        {
+                            var textView = FindViewById<TextView>(Resource.Id.toolbar_title);
+                            textView.Text = viewModel.GetLocationName();
+                            adapter.SetData(selectedDaysWeatherData);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Helper.ShowToast(this, "An error occurred: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    Helper.ShowToast(this, "No internet connection.");
+                }
+            }
+
+        }
     }
 
     public class WeatherForecastAdapter : RecyclerView.Adapter
     {
-        private List<Interfaces.WeatherForecastVO> weatherForecastList;
-        private Context context;
+        private List<HourWeatherForecastVO> weatherForecastList;
+        private readonly Context context;
 
         public WeatherForecastAdapter(Context context)
         {
             this.context = context;
-            weatherForecastList = new List<Interfaces.WeatherForecastVO>();
+            weatherForecastList = new List<HourWeatherForecastVO>();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -58,18 +91,19 @@ namespace NNChallenge.Droid
             return viewHolder;
         }
 
+
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             if (holder is WeatherForecastViewHolder weatherHolder)
             {
-                Interfaces.WeatherForecastVO weatherForecast = weatherForecastList[position];
+                HourWeatherForecastVO weatherForecast = weatherForecastList[position];
                 weatherHolder.Bind(weatherForecast);
             }
         }
 
         public override int ItemCount => weatherForecastList.Count;
 
-        public void SetData(List<Interfaces.WeatherForecastVO> data)
+        public void SetData(List<HourWeatherForecastVO> data)
         {
             weatherForecastList = data;
             NotifyDataSetChanged();
@@ -77,23 +111,24 @@ namespace NNChallenge.Droid
 
         public class WeatherForecastViewHolder : RecyclerView.ViewHolder
         {
-            private TextView cityTextView;
-            private TextView temperatureTextView;
+            private readonly TextView dateTextView;
+            private readonly TextView temperatureTextView;
+            private readonly ImageView weatherImageView;
 
             public WeatherForecastViewHolder(View itemView) : base(itemView)
             {
-                cityTextView = itemView.FindViewById<TextView>(Resource.Id.cityTextView);
+                dateTextView = itemView.FindViewById<TextView>(Resource.Id.dateTextView);
                 temperatureTextView = itemView.FindViewById<TextView>(Resource.Id.temperatureTextView);
-
-                // Initialize other views here as needed
+                weatherImageView = itemView.FindViewById<ImageView>(Resource.Id.weatherImageView);
             }
 
-            public void Bind(Interfaces.WeatherForecastVO weatherForecast)
+            public void Bind(HourWeatherForecastVO weatherForecast)
             {
-                cityTextView.Text = weatherForecast.City;
-                temperatureTextView.Text = weatherForecast.CurrentWeather.TemperatureCelsius.ToString();
-
-                // Bind other views with data here
+                temperatureTextView.Text = $"{weatherForecast.TemperatureCelcius}°C / {weatherForecast.TemperatureFahrenheit}°F";
+                dateTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy");
+                Picasso.With(ItemView.Context)
+                    .Load(weatherForecast.ForecastPictureURL)
+                    .Into(weatherImageView);
             }
         }
     }
