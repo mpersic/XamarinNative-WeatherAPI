@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using NNChallenge.Data;
 using NNChallenge.Interfaces;
 using SDWebImage;
 using UIKit;

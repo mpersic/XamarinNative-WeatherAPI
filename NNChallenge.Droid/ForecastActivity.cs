@@ -41,7 +41,7 @@ namespace NNChallenge.Droid
             if (Intent.HasExtra("SelectedLocation"))
             {
                 var selectedLocation = Intent.GetStringExtra("SelectedLocation");
-                if (ConnectivityHelper.IsInternetConnectionAvailable(this))
+                if (Helper.IsInternetConnectionAvailable(this))
                 {
                     try
                     {
@@ -51,7 +51,7 @@ namespace NNChallenge.Droid
 
                         if (selectedDaysWeatherData.Count == 0)
                         {
-                            ConnectivityHelper.ShowToast(this, "No items in the list.");
+                            Helper.ShowToast(this, "No items in the list.");
                         }
                         else
                         {
@@ -60,12 +60,12 @@ namespace NNChallenge.Droid
                     }
                     catch (Exception ex)
                     {
-                        ConnectivityHelper.ShowToast(this, "An error occurred: " + ex.Message);
+                        Helper.ShowToast(this, "An error occurred: " + ex.Message);
                     }
                 }
                 else
                 {
-                    ConnectivityHelper.ShowToast(this, "No internet connection.");
+                    Helper.ShowToast(this, "No internet connection.");
                 }
             }
         }
