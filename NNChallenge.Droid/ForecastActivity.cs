@@ -47,7 +47,7 @@ namespace NNChallenge.Droid
                     {
                         await viewModel.GetDailyWeather(selectedLocation);
                         var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
-                        ActionBar.Title = viewModel.GetLocationName(); // You can change the title to whatever you want
+                        //ActionBar.Title = viewModel.GetLocationName(); // You can change the title to whatever you want
 
                         if (selectedDaysWeatherData.Count == 0)
                         {
