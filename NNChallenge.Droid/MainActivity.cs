@@ -36,7 +36,13 @@ namespace NNChallenge.Droid
 
         private void OnForecastClick(object sender, EventArgs e)
         {
-            this.StartActivity(new Intent(this, typeof(ForecastActivity)));
+            Spinner spinnerLocations = FindViewById<Spinner>(Resource.Id.spinner_location);
+            string selectedLocation = spinnerLocations.SelectedItem.ToString();
+
+            Intent intent = new Intent(this, typeof(ForecastActivity));
+            intent.PutExtra("SelectedLocation", selectedLocation);
+            StartActivity(intent);
         }
+
     }
 }
