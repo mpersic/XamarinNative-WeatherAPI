@@ -29,7 +29,7 @@ namespace NNChallenge.iOS
             var cell = tableView.DequeueReusableCell("CustomCell") as CustomTableViewCell ?? new CustomTableViewCell("CustomCell");
             var forecast = ForecastVOs[indexPath.Row];
 
-            cell.TitleLabel.Text = $"{forecast.TemperatureCelcius}C / {forecast.TemperatureFahrenheit}F";
+            cell.TitleLabel.Text = $"{forecast.TemperatureCelcius}°C / {forecast.TemperatureFahrenheit}°F";
             cell.SubtitleLabel.Text = forecast.Date.ToString("MMMM d, yyyy");
             cell.CustomImageView.SetImage(new NSUrl(forecast.ForecastPictureURL), UIImage.FromBundle("placeholder_image.png"));
 

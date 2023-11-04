@@ -124,7 +124,7 @@ namespace NNChallenge.Droid
 
             public void Bind(HourWeatherForecastVO weatherForecast)
             {
-                temperatureTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
+                temperatureTextView.Text = $"{weatherForecast.TemperatureCelcius}°C / {weatherForecast.TemperatureFahrenheit}°F";
                 dateTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy");
                 Picasso.With(ItemView.Context)
                     .Load(weatherForecast.ForecastPictureURL)
