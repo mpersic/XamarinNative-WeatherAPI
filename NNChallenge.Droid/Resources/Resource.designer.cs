@@ -5307,25 +5307,28 @@ namespace NNChallenge.Droid
 			public const int visible_removing_fragment_view_tag = 2131231085;
 			
 			// aapt resource value: 0x7F08016E
-			public const int west = 2131231086;
+			public const int weatherImageView = 2131231086;
 			
 			// aapt resource value: 0x7F08016F
-			public const int withText = 2131231087;
+			public const int west = 2131231087;
 			
 			// aapt resource value: 0x7F080170
-			public const int wrap = 2131231088;
+			public const int withText = 2131231088;
 			
 			// aapt resource value: 0x7F080171
-			public const int wrap_content = 2131231089;
+			public const int wrap = 2131231089;
 			
 			// aapt resource value: 0x7F080172
-			public const int wrap_content_constrained = 2131231090;
+			public const int wrap_content = 2131231090;
 			
 			// aapt resource value: 0x7F080173
-			public const int x_left = 2131231091;
+			public const int wrap_content_constrained = 2131231091;
 			
 			// aapt resource value: 0x7F080174
-			public const int x_right = 2131231092;
+			public const int x_left = 2131231092;
+			
+			// aapt resource value: 0x7F080175
+			public const int x_right = 2131231093;
 			
 			static Id()
 			{

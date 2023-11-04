@@ -8,6 +8,8 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using NNChallenge.Interfaces;
+using Square.Picasso;
+using Xamarin.Essentials;
 
 namespace NNChallenge.Droid
 {
@@ -82,11 +84,13 @@ namespace NNChallenge.Droid
         {
             private TextView cityTextView;
             private TextView temperatureTextView;
+            private ImageView weatherImageView;
 
             public WeatherForecastViewHolder(View itemView) : base(itemView)
             {
                 cityTextView = itemView.FindViewById<TextView>(Resource.Id.cityTextView);
                 temperatureTextView = itemView.FindViewById<TextView>(Resource.Id.temperatureTextView);
+                weatherImageView = itemView.FindViewById<ImageView>(Resource.Id.weatherImageView);
 
                 // Initialize other views here as needed
             }
@@ -95,7 +99,9 @@ namespace NNChallenge.Droid
             {
                 cityTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
                 temperatureTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy"); ;
-
+                Picasso.With(ItemView.Context)
+            .Load(weatherForecast.ForecastPictureURL)
+            .Into(weatherImageView);
                 // Bind other views with data here
             }
         }
