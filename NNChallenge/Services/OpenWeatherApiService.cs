@@ -27,7 +27,7 @@ namespace NNChallenge.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<IWeatherForecastVO> GetDailyWeather(string city)
+        public async Task<IWeatherForecastVO> GetWeatherForecast(string city)
         {
             try
             {
@@ -38,11 +38,11 @@ namespace NNChallenge.Services
                     var content = await response.Content.ReadAsStringAsync();
                     var deserializedContent = JsonConvert.DeserializeObject<Root>(content);
 
-                    var allDaysHours = deserializedContent.Forecast.ForecastDay
+                    var hourForecast = deserializedContent.Forecast.ForecastDay
                         .SelectMany(forecastday => forecastday.Hour)
                         .ToList();
 
-                    var mappedHourForecasts = allDaysHours.Select(hour => new HourWeatherForecastVO
+                    var mappedHourForecasts = hourForecast.Select(hour => new HourWeatherForecastVO
                     {
                         Date = DateTime.Parse(hour.Time),
                         TemperatureCelcius = hour.TemperatureCelsius,

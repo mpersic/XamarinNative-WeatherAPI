@@ -17,7 +17,7 @@ namespace NNChallenge.Tests
             var weatherService = new OpenWeatherApiService(httpClient);
 
             // Act
-            var result = await weatherService.GetDailyWeather(city);
+            var result = await weatherService.GetWeatherForecast(city);
 
             // Assert
             Assert.IsNotNull(result);
@@ -34,10 +34,10 @@ namespace NNChallenge.Tests
             var weatherService = new OpenWeatherApiService(httpClient);
 
             // Act and Assert
-            Assert.ThrowsAsync<Exception>(() => weatherService.GetDailyWeather(city));
+            Assert.ThrowsAsync<Exception>(() => weatherService.GetWeatherForecast(city));
         }
 
-        private HttpClient CreateMockHttpClient(HttpStatusCode statusCode, string content)
+        private static HttpClient CreateMockHttpClient(HttpStatusCode statusCode, string content)
         {
             var mockHandler = new Mock<HttpMessageHandler>();
             mockHandler.Protected()
@@ -51,7 +51,7 @@ namespace NNChallenge.Tests
             return new HttpClient(mockHandler.Object);
         }
 
-        private string SampleJsonResponse()
+        private static string SampleJsonResponse()
         {
             // Create a sample JSON response for testing
             return @"{

@@ -14,7 +14,7 @@ namespace NNChallenge.iOS
     {
         public TableViewDataSource(List<HourWeatherForecastVO> forecastVOs)
         {
-            this.forecastVOs = forecastVOs;
+            this.ForecastVOs = forecastVOs;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
@@ -22,12 +22,12 @@ namespace NNChallenge.iOS
             return 60;
         }
 
-        public List<HourWeatherForecastVO> forecastVOs { get; set; }
+        public List<HourWeatherForecastVO> ForecastVOs { get; set; }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             var cell = tableView.DequeueReusableCell("CustomCell") as CustomTableViewCell ?? new CustomTableViewCell("CustomCell");
-            var forecast = forecastVOs[indexPath.Row];
+            var forecast = ForecastVOs[indexPath.Row];
 
             cell.TitleLabel.Text = $"{forecast.TemperatureCelcius}C / {forecast.TemperatureFahrenheit}F";
             cell.SubtitleLabel.Text = forecast.Date.ToString("MMMM d, yyyy");
@@ -52,11 +52,9 @@ namespace NNChallenge.iOS
             }
         }
 
-
-
         public override nint RowsInSection(UITableView tableView, nint section)
         {
-            return forecastVOs.Count();
+            return ForecastVOs.Count();
         }
     }
 }

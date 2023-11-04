@@ -15,14 +15,14 @@ namespace NNChallenge.ViewModels
 
 		public ForecastViewModel(IOpenWeatherApiService openWeatherApiService)
 		{
-			this._openWeatherApiService = openWeatherApiService;
+			_openWeatherApiService = openWeatherApiService;
 		}
 
-		public async Task<IWeatherForecastVO> GetDailyWeather(string selectedLocation) {
+		public async Task<IWeatherForecastVO> GetWeatherForecast(string selectedLocation) {
 			//I would normally return HourWeatherForecasthere and set page title according
 			//to passed parameter but due to challenge requirements i will break the logic
 			//in multiple steps
-            weatherForecastVO = await _openWeatherApiService.GetDailyWeather(selectedLocation);
+            weatherForecastVO = await _openWeatherApiService.GetWeatherForecast(selectedLocation);
 			return weatherForecastVO;
         }
 

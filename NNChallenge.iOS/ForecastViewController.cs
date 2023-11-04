@@ -29,7 +29,7 @@ namespace NNChallenge.iOS
             tableView = new UITableView
             {
                 Frame = View.Bounds,
-                AutoresizingMask = UIViewAutoresizing.FlexibleHeight
+                AutoresizingMask = UIViewAutoresizing.All
             };
 
             View.AddSubview(tableView);
@@ -48,7 +48,7 @@ namespace NNChallenge.iOS
                 {
                     try
                     {
-                        await _viewModel.GetDailyWeather(SelectedLocation);
+                        await _viewModel.GetWeatherForecast(SelectedLocation);
                         var selectedDaysWeatherData = _viewModel.GetHourlyWeatherForSelectedDays();
                         Title = _viewModel.GetLocationName();
 
