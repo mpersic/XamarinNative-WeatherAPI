@@ -9,6 +9,7 @@ using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using Autofac;
 using NNChallenge.Data;
 using NNChallenge.DI;
 using NNChallenge.Interfaces;
