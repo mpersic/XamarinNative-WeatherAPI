@@ -34,11 +34,11 @@ namespace NNChallenge.Services
                     var content = await response.Content.ReadAsStringAsync();
                     var deserializedContent = JsonConvert.DeserializeObject<Root>(content);
 
-                    var allDays = deserializedContent.Forecast.ForecastDay
+                    var allDaysHours = deserializedContent.Forecast.ForecastDay
                         .SelectMany(forecastday => forecastday.Hour)
                         .ToList();
 
-                    var mappedHourForecasts = allDays.Select(hour => new HourWeatherForecastVO
+                    var mappedHourForecasts = allDaysHours.Select(hour => new HourWeatherForecastVO
                     {
                         Date = DateTime.Parse(hour.Time),
                         TemperatureCelcius = hour.TemperatureCelsius,
