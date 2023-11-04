@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using Autofac;
 using CoreFoundation;
+using NNChallenge.DI;
 using NNChallenge.Interfaces;
 using NNChallenge.ViewModels;
 using UIKit;
@@ -10,15 +12,15 @@ namespace NNChallenge.iOS
 {
     public partial class ForecastViewController : UIViewController
     {
-
-        public string SelectedLocation { get; set; }
-        private ForecastViewModel viewModel;
+        private readonly ForecastViewModel _viewModel;
         private UITableView tableView;
 
         public ForecastViewController() : base("ForecastViewController", null)
         {
-            viewModel = new ForecastViewModel();
+            _viewModel = DIContainer.Instance.Resolve<ForecastViewModel>();
         }
+
+        public string SelectedLocation { get; set; }
 
         public override async void ViewDidLoad()
         {
@@ -46,9 +48,9 @@ namespace NNChallenge.iOS
                 {
                     try
                     {
-                        await viewModel.GetDailyWeather(SelectedLocation);
-                        var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
-                        Title = viewModel.GetLocationName();
+                        await _viewModel.GetDailyWeather(SelectedLocation);
+                        var selectedDaysWeatherData = _viewModel.GetHourlyWeatherForSelectedDays();
+                        Title = _viewModel.GetLocationName();
 
                         if (selectedDaysWeatherData.Count == 0)
                         {

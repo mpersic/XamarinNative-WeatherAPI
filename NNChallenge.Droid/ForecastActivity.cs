@@ -5,10 +5,12 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using NNChallenge.Data;
+using NNChallenge.DI;
 using NNChallenge.Interfaces;
 using NNChallenge.ViewModels;
 using Square.Picasso;
@@ -36,7 +38,7 @@ namespace NNChallenge.Droid
             adapter = new WeatherForecastAdapter(this);
             recyclerView.SetAdapter(adapter);
 
-            viewModel = new ForecastViewModel();
+            viewModel = DIContainer.Instance.Resolve<ForecastViewModel>();
 
             if (Intent.HasExtra("SelectedLocation"))
             {
