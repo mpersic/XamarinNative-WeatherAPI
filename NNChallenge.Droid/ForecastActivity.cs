@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using NNChallenge.Interfaces;
+using NNChallenge.ViewModels;
 using Square.Picasso;
 using Xamarin.Essentials;
 
@@ -18,28 +19,27 @@ namespace NNChallenge.Droid
     {
         private RecyclerView recyclerView;
         private WeatherForecastAdapter adapter;
+        private ForecastViewModel viewModel;
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_forecast);
+
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             recyclerView.SetLayoutManager(new LinearLayoutManager(this));
-
             adapter = new WeatherForecastAdapter(this);
             recyclerView.SetAdapter(adapter);
+
+            viewModel = new ForecastViewModel();
 
             if (Intent.HasExtra("SelectedLocation"))
             {
                 string selectedLocation = Intent.GetStringExtra("SelectedLocation");
-                var vs = new NNChallenge.Interfaces.OpenWeatherApi(city: selectedLocation);
-                var items = await vs.GetDailyWeather();
-                var data = items.HourForecast.Select(hourForecast => (HourWeatherForecastVO)hourForecast).ToList();
+                var data = await viewModel.getForecast(selectedLocation);
                 adapter.SetData(data);
-                // Now you can use the selectedLocation in your ForecastActivity.
             }
-            // Handle the case where the extra is not found if needed.
         }
 
     }

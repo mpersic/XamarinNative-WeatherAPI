@@ -8,11 +8,18 @@
     <None Remove="Interfaces\" />
     <None Remove="Constants\" />
     <None Remove="Services\" />
+    <None Remove="Data\" />
+    <None Remove="ViewModels\" />
+    <None Remove="Domain\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Constants\" />
     <Folder Include="Services\" />
+    <Folder Include="Services\" />
+    <Folder Include="Data\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Domain\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

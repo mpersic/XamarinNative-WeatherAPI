@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NNChallenge.Interfaces
 {
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Astro
     {
         public string sunrise { get; set; }
@@ -147,5 +143,17 @@ namespace NNChallenge.Interfaces
         public Forecast forecast { get; set; }
     }
 
+    public class HourWeatherForecastVO : IHourWeatherForecastVO
+    {
+        public DateTime Date { get; set; }
+        public float TemperatureCelcius { get; set; }
+        public float TemperatureFahrenheit { get; set; }
+        public string ForecastPictureURL { get; set; }
+    }
 
+    public class WeatherForcastVO : IWeatherForcastVO
+    {
+        public string City { get; set; }
+        public IHourWeatherForecastVO[] HourForecast { get; set; }
+    }
 }

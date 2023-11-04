@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreGraphics;
 using Foundation;
 using NNChallenge.Interfaces;
+using SDWebImage;
 using UIKit;
 
 namespace NNChallenge.iOS
@@ -18,21 +20,32 @@ namespace NNChallenge.iOS
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell("cell", indexPath);
-
-            if (cell == null)
-            {
-                cell = new UITableViewCell(UITableViewCellStyle.Subtitle, "cell");
-            }
-
-            // Access the corresponding HourWeatherForecastVO from the list
+            var cell = tableView.DequeueReusableCell("CustomCell") as CustomTableViewCell ?? new CustomTableViewCell("CustomCell");
             var forecast = forecastVOs[indexPath.Row];
 
-            // Set the label's text to the temperature value from the forecast object
-            cell.TextLabel.Text = $"{forecast.TemperatureCelcius}C / {forecast.TemperatureFahrenheit}F"; // Assuming TemperatureC is a property in HourWeatherForecastVO
-            cell.DetailTextLabel.Text = forecast.Date.ToString("MMMM d, yyyy"); ; // Replace with your actual subtitle text
+            cell.TitleLabel.Text = $"{forecast.TemperatureCelcius}C / {forecast.TemperatureFahrenheit}F";
+            cell.SubtitleLabel.Text = forecast.Date.ToString("MMMM d, yyyy");
+            cell.CustomImageView.SetImage(new NSUrl(forecast.ForecastPictureURL), UIImage.FromBundle("placeholder_image.png"));
+
             return cell;
         }
+
+        public class CustomTableViewCell : UITableViewCell
+        {
+            public UIImageView CustomImageView { get; set; }
+            public UILabel TitleLabel { get; set; }
+            public UILabel SubtitleLabel { get; set; }
+
+            public CustomTableViewCell(string reuseIdentifier) : base(UITableViewCellStyle.Default, reuseIdentifier)
+            {
+                CustomImageView = new UIImageView(new CGRect(10, 10, 40, 40));
+                TitleLabel = new UILabel(new CGRect(60, 10, 200, 20));
+                SubtitleLabel = new UILabel(new CGRect(60, 30, 200, 20));
+
+                ContentView.AddSubviews(CustomImageView, TitleLabel, SubtitleLabel);
+            }
+        }
+
 
 
         public override nint RowsInSection(UITableView tableView, nint section)
