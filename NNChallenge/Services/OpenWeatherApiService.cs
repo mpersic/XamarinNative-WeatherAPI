@@ -34,21 +34,21 @@ namespace NNChallenge.Services
                     var content = await response.Content.ReadAsStringAsync();
                     var deserializedContent = JsonConvert.DeserializeObject<Root>(content);
 
-                    var allDays = deserializedContent.forecast.forecastday
-                        .SelectMany(forecastday => forecastday.hour)
+                    var allDays = deserializedContent.Forecast.ForecastDay
+                        .SelectMany(forecastday => forecastday.Hour)
                         .ToList();
 
                     var mappedHourForecasts = allDays.Select(hour => new HourWeatherForecastVO
                     {
-                        Date = DateTime.Parse(hour.time),
-                        TemperatureCelcius = hour.temp_c,
-                        TemperatureFahrenheit = hour.temp_f,
-                        ForecastPictureURL = "https:" + hour.condition.icon
+                        Date = DateTime.Parse(hour.Time),
+                        TemperatureCelcius = hour.TemperatureCelsius,
+                        TemperatureFahrenheit = hour.TemperatureFahrenheit,
+                        ForecastPictureURL = "https:" + hour.Condition.Icon
                     }).ToArray();
 
                     var weatherForecast = new WeatherForecastVO
                     {
-                        City = deserializedContent.location.name,
+                        City = deserializedContent.Location.Name,
                         HourForecast = mappedHourForecasts
                     };
 
