@@ -13,6 +13,7 @@ namespace NNChallenge.iOS
 
         public string SelectedLocation { get; set; }
         private ForecastViewModel viewModel;
+        private UITableView tableView;
 
         public ForecastViewController() : base("ForecastViewController", null)
         {
@@ -22,7 +23,23 @@ namespace NNChallenge.iOS
         public override async void ViewDidLoad()
         {
             base.ViewDidLoad();
-            UITableView tableView = (UITableView)View.ViewWithTag(1);
+
+            tableView = new UITableView
+            {
+                Frame = View.Bounds,
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight
+            };
+
+            View.AddSubview(tableView);
+
+            NSLayoutConstraint.ActivateConstraints(new[]
+           {
+                tableView.TopAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TopAnchor),
+                tableView.LeadingAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.LeadingAnchor),
+                tableView.TrailingAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.TrailingAnchor),
+                tableView.BottomAnchor.ConstraintEqualTo(View.SafeAreaLayoutGuide.BottomAnchor)
+            });
+
             if (!string.IsNullOrEmpty(SelectedLocation))
             {
                 if (Helper.IsInternetConnectionAvailable())
@@ -33,7 +50,6 @@ namespace NNChallenge.iOS
                         var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
                         Title = viewModel.GetLocationName();
 
-
                         if (selectedDaysWeatherData.Count == 0)
                         {
                             ShowToast("No items in the list.");
@@ -41,6 +57,7 @@ namespace NNChallenge.iOS
                         else
                         {
                             tableView.Source = new TableViewDataSource(selectedDaysWeatherData);
+                            tableView.ReloadData();
                         }
                     }
                     catch (Exception ex)

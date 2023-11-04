@@ -17,6 +17,11 @@ namespace NNChallenge.iOS
             this.forecastVOs = forecastVOs;
         }
 
+        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return 60;
+        }
+
         public List<HourWeatherForecastVO> forecastVOs { get; set; }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
