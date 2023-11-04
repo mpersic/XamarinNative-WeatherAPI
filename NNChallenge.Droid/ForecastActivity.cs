@@ -32,15 +32,12 @@ namespace NNChallenge.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_forecast);
 
-            //ActionBar.Title = "Weather Forecast"; // You can change the title to whatever you want
-
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             adapter = new WeatherForecastAdapter(this);
             recyclerView.SetAdapter(adapter);
 
             viewModel = DIContainer.Instance.Resolve<ForecastViewModel>();
-
             if (Intent.HasExtra("SelectedLocation"))
             {
                 var selectedLocation = Intent.GetStringExtra("SelectedLocation");
@@ -50,7 +47,6 @@ namespace NNChallenge.Droid
                     {
                         await viewModel.GetWeatherForecast(selectedLocation);
                         var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
-                        //ActionBar.Title = viewModel.GetLocationName(); // You can change the title to whatever you want
 
                         if (selectedDaysWeatherData.Count == 0)
                         {
@@ -58,6 +54,8 @@ namespace NNChallenge.Droid
                         }
                         else
                         {
+                            var textView = FindViewById<TextView>(Resource.Id.toolbar_title);
+                            textView.Text = viewModel.GetLocationName();
                             adapter.SetData(selectedDaysWeatherData);
                         }
                     }
@@ -71,6 +69,7 @@ namespace NNChallenge.Droid
                     Helper.ShowToast(this, "No internet connection.");
                 }
             }
+
         }
     }
 
