@@ -17,6 +17,10 @@ namespace NNChallenge.Services
         private readonly string _alerts = "no";
         private readonly HttpClient _httpClient;
 
+        public OpenWeatherApiService(HttpClient mockClient)
+        {
+            _httpClient = mockClient;
+        }
 
         public OpenWeatherApiService()
         {
