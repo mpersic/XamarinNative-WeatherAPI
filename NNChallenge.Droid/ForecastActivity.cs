@@ -1,11 +1,13 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using NNChallenge.Interfaces;
 
 namespace NNChallenge.Droid
 {
@@ -30,9 +32,9 @@ namespace NNChallenge.Droid
             {
                 string selectedLocation = Intent.GetStringExtra("SelectedLocation");
                 var vs = new NNChallenge.Interfaces.OpenWeatherApi(city: selectedLocation);
-                var current = await vs.GetCurrentWeather();
-                adapter.SetData(current);
-                await vs.GetDailyWeather();
+                var items = await vs.GetDailyWeather();
+                var data = items.HourForecast.Select(hourForecast => (HourWeatherForecastVO)hourForecast).ToList();
+                adapter.SetData(data);
                 // Now you can use the selectedLocation in your ForecastActivity.
             }
             // Handle the case where the extra is not found if needed.
@@ -42,13 +44,13 @@ namespace NNChallenge.Droid
 
     public class WeatherForecastAdapter : RecyclerView.Adapter
     {
-        private List<Interfaces.WeatherForecastVO> weatherForecastList;
+        private List<HourWeatherForecastVO> weatherForecastList;
         private Context context;
 
         public WeatherForecastAdapter(Context context)
         {
             this.context = context;
-            weatherForecastList = new List<Interfaces.WeatherForecastVO>();
+            weatherForecastList = new List<HourWeatherForecastVO>();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -58,18 +60,19 @@ namespace NNChallenge.Droid
             return viewHolder;
         }
 
+
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             if (holder is WeatherForecastViewHolder weatherHolder)
             {
-                Interfaces.WeatherForecastVO weatherForecast = weatherForecastList[position];
+                HourWeatherForecastVO weatherForecast = weatherForecastList[position];
                 weatherHolder.Bind(weatherForecast);
             }
         }
 
         public override int ItemCount => weatherForecastList.Count;
 
-        public void SetData(List<Interfaces.WeatherForecastVO> data)
+        public void SetData(List<HourWeatherForecastVO> data)
         {
             weatherForecastList = data;
             NotifyDataSetChanged();
@@ -88,10 +91,10 @@ namespace NNChallenge.Droid
                 // Initialize other views here as needed
             }
 
-            public void Bind(Interfaces.WeatherForecastVO weatherForecast)
+            public void Bind(HourWeatherForecastVO weatherForecast)
             {
-                cityTextView.Text = weatherForecast.City;
-                temperatureTextView.Text = weatherForecast.CurrentWeather.TemperatureCelsius.ToString();
+                cityTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
+                temperatureTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy"); ;
 
                 // Bind other views with data here
             }
