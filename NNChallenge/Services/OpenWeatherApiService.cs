@@ -4,6 +4,7 @@ using NNChallenge.Interfaces;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
+using NNChallenge.Data;
 
 namespace NNChallenge.Services
 {
@@ -22,7 +23,7 @@ namespace NNChallenge.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<IWeatherForcastVO> GetDailyWeather(string city)
+        public async Task<IWeatherForecastVO> GetDailyWeather(string city)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace NNChallenge.Services
                         ForecastPictureURL = "https:" + hour.condition.icon
                     }).ToArray();
 
-                    var weatherForecast = new WeatherForcastVO
+                    var weatherForecast = new WeatherForecastVO
                     {
                         City = deserializedContent.location.name,
                         HourForecast = mappedHourForecasts

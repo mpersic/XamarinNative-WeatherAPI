@@ -5,7 +5,7 @@ namespace NNChallenge.Interfaces
 {
 	public interface IOpenWeatherApiService
 	{
-        Task<IWeatherForcastVO> GetDailyWeather(string city);
+        Task<IWeatherForecastVO> GetDailyWeather(string city);
     }
 }
 

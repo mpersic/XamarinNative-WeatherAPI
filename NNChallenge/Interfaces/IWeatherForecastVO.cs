@@ -2,7 +2,7 @@
 
 namespace NNChallenge.Interfaces
 {
-    public interface IWeatherForcastVO
+    public interface IWeatherForecastVO
     {
         /// <summary>
         /// Name of the city

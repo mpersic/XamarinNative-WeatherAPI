@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NNChallenge.Data;
 using NNChallenge.Interfaces;
 using NNChallenge.Services;
 

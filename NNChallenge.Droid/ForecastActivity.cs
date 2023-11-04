@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Android.App;
@@ -7,6 +8,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using NNChallenge.Data;
 using NNChallenge.Interfaces;
 using NNChallenge.ViewModels;
 using Square.Picasso;
@@ -24,8 +26,10 @@ namespace NNChallenge.Droid
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_forecast);
+
+            //ActionBar.Title = "Weather Forecast"; // You can change the title to whatever you want
 
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             recyclerView.SetLayoutManager(new LinearLayoutManager(this));
@@ -37,17 +41,38 @@ namespace NNChallenge.Droid
             if (Intent.HasExtra("SelectedLocation"))
             {
                 string selectedLocation = Intent.GetStringExtra("SelectedLocation");
-                var data = await viewModel.getForecast(selectedLocation);
-                adapter.SetData(data);
+                if (ConnectivityHelper.IsInternetConnectionAvailable(this))
+                {
+                    try
+                    {
+                        var data = await viewModel.getForecast(selectedLocation);
+
+                        if (data.Count == 0)
+                        {
+                            ConnectivityHelper.ShowToast(this, "No items in the list.");
+                        }
+                        else
+                        {
+                            adapter.SetData(data);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ConnectivityHelper.ShowToast(this, "An error occurred: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    ConnectivityHelper.ShowToast(this, "No internet connection.");
+                }
             }
         }
-
     }
 
     public class WeatherForecastAdapter : RecyclerView.Adapter
     {
         private List<HourWeatherForecastVO> weatherForecastList;
-        private Context context;
+        private readonly Context context;
 
         public WeatherForecastAdapter(Context context)
         {
@@ -82,9 +107,9 @@ namespace NNChallenge.Droid
 
         public class WeatherForecastViewHolder : RecyclerView.ViewHolder
         {
-            private TextView cityTextView;
-            private TextView temperatureTextView;
-            private ImageView weatherImageView;
+            private readonly TextView cityTextView;
+            private readonly TextView temperatureTextView;
+            private readonly ImageView weatherImageView;
 
             public WeatherForecastViewHolder(View itemView) : base(itemView)
             {
@@ -100,9 +125,8 @@ namespace NNChallenge.Droid
                 cityTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
                 temperatureTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy");
                 Picasso.With(ItemView.Context)
-            .Load(weatherForecast.ForecastPictureURL)
-            .Into(weatherImageView);
-                // Bind other views with data here
+                    .Load(weatherForecast.ForecastPictureURL)
+                    .Into(weatherImageView);
             }
         }
     }
