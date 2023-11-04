@@ -40,20 +40,22 @@ namespace NNChallenge.Droid
 
             if (Intent.HasExtra("SelectedLocation"))
             {
-                string selectedLocation = Intent.GetStringExtra("SelectedLocation");
+                var selectedLocation = Intent.GetStringExtra("SelectedLocation");
                 if (ConnectivityHelper.IsInternetConnectionAvailable(this))
                 {
                     try
                     {
-                        var data = await viewModel.getForecast(selectedLocation);
+                        await viewModel.GetDailyWeather(selectedLocation);
+                        var selectedDaysWeatherData = viewModel.GetHourlyWeatherForSelectedDays();
+                        ActionBar.Title = viewModel.GetLocationName(); // You can change the title to whatever you want
 
-                        if (data.Count == 0)
+                        if (selectedDaysWeatherData.Count == 0)
                         {
                             ConnectivityHelper.ShowToast(this, "No items in the list.");
                         }
                         else
                         {
-                            adapter.SetData(data);
+                            adapter.SetData(selectedDaysWeatherData);
                         }
                     }
                     catch (Exception ex)
@@ -107,23 +109,21 @@ namespace NNChallenge.Droid
 
         public class WeatherForecastViewHolder : RecyclerView.ViewHolder
         {
-            private readonly TextView cityTextView;
+            private readonly TextView dateTextView;
             private readonly TextView temperatureTextView;
             private readonly ImageView weatherImageView;
 
             public WeatherForecastViewHolder(View itemView) : base(itemView)
             {
-                cityTextView = itemView.FindViewById<TextView>(Resource.Id.cityTextView);
+                dateTextView = itemView.FindViewById<TextView>(Resource.Id.dateTextView);
                 temperatureTextView = itemView.FindViewById<TextView>(Resource.Id.temperatureTextView);
                 weatherImageView = itemView.FindViewById<ImageView>(Resource.Id.weatherImageView);
-
-                // Initialize other views here as needed
             }
 
             public void Bind(HourWeatherForecastVO weatherForecast)
             {
-                cityTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
-                temperatureTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy");
+                temperatureTextView.Text = $"{weatherForecast.TemperatureCelcius}C / {weatherForecast.TemperatureFahrenheit}F";
+                dateTextView.Text = weatherForecast.Date.ToString("MMMM d, yyyy");
                 Picasso.With(ItemView.Context)
                     .Load(weatherForecast.ForecastPictureURL)
                     .Into(weatherImageView);

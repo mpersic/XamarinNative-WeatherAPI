@@ -4515,55 +4515,55 @@ namespace NNChallenge.Droid
 			public const int chronometer = 2131230830;
 			
 			// aapt resource value: 0x7F08006F
-			public const int cityTextView = 2131230831;
+			public const int clip_horizontal = 2131230831;
 			
 			// aapt resource value: 0x7F080070
-			public const int clip_horizontal = 2131230832;
+			public const int clip_vertical = 2131230832;
 			
 			// aapt resource value: 0x7F080071
-			public const int clip_vertical = 2131230833;
+			public const int clockwise = 2131230833;
 			
 			// aapt resource value: 0x7F080072
-			public const int clockwise = 2131230834;
+			public const int closest = 2131230834;
 			
 			// aapt resource value: 0x7F080073
-			public const int closest = 2131230835;
+			public const int collapseActionView = 2131230835;
 			
 			// aapt resource value: 0x7F080074
-			public const int collapseActionView = 2131230836;
+			public const int constraint = 2131230836;
 			
 			// aapt resource value: 0x7F080075
-			public const int constraint = 2131230837;
+			public const int container = 2131230837;
 			
 			// aapt resource value: 0x7F080076
-			public const int container = 2131230838;
+			public const int content = 2131230838;
 			
 			// aapt resource value: 0x7F080077
-			public const int content = 2131230839;
+			public const int contentPanel = 2131230839;
 			
 			// aapt resource value: 0x7F080078
-			public const int contentPanel = 2131230840;
+			public const int continuousVelocity = 2131230840;
 			
 			// aapt resource value: 0x7F080079
-			public const int continuousVelocity = 2131230841;
+			public const int coordinator = 2131230841;
 			
 			// aapt resource value: 0x7F08007A
-			public const int coordinator = 2131230842;
-			
-			// aapt resource value: 0x7F08007B
-			public const int cos = 2131230843;
+			public const int cos = 2131230842;
 			
 			// aapt resource value: 0x7F080001
 			public const int CTRL = 2131230721;
 			
+			// aapt resource value: 0x7F08007B
+			public const int currentState = 2131230843;
+			
 			// aapt resource value: 0x7F08007C
-			public const int currentState = 2131230844;
+			public const int custom = 2131230844;
 			
 			// aapt resource value: 0x7F08007D
-			public const int custom = 2131230845;
+			public const int customPanel = 2131230845;
 			
 			// aapt resource value: 0x7F08007E
-			public const int customPanel = 2131230846;
+			public const int dateTextView = 2131230846;
 			
 			// aapt resource value: 0x7F08007F
 			public const int decelerate = 2131230847;
