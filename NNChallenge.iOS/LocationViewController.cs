@@ -26,6 +26,7 @@ namespace NNChallenge.iOS
         {
             var selected = _picker.SelectedRowInComponent(0);
             var forecastView = new ForecastViewController();
+            forecastView.SelectedCity = LocationConstants.LOCATIONS[selected];
             this.NavigationController.PushViewController(forecastView, true);
         }
 
