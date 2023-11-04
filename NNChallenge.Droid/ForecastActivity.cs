@@ -9,6 +9,7 @@ using Android.SE.Omapi;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using Autofac;
 using NNChallenge.Data;
 using NNChallenge.DI;
 using NNChallenge.Interfaces;
@@ -28,7 +29,7 @@ namespace NNChallenge.Droid
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Platform.Init(this, savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_forecast);
 
             //ActionBar.Title = "Weather Forecast"; // You can change the title to whatever you want

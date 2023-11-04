@@ -24,7 +24,7 @@ public class WeatherServiceTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual("New York", result.City);
+        Assert.AreEqual("Berlin", result.City);
         Assert.IsNotEmpty(result.HourForecast);
     }
 
