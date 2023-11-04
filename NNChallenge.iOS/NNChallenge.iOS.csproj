@@ -140,6 +140,7 @@
           <DependentUpon>ForecastViewController.cs</DependentUpon>
         </Compile>
         <Compile Include="ViewModel\LocationPickerModel.cs" />
+        <Compile Include="TableViewDataSource.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\NNChallenge\NNChallenge.csproj">

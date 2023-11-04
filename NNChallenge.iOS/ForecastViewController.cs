@@ -14,7 +14,9 @@ namespace NNChallenge.iOS
         {
             base.ViewDidLoad();
             Title = "Forecast";
-            // Perform any additional setup after loading the view, typically from a nib.
+            UITableView tableView = (UITableView)View.ViewWithTag(1);
+            tableView.RegisterClassForCellReuse(typeof(UITableViewCell), "cell");
+            tableView.Source = new TableViewDataSource();
         }
 
         public override void DidReceiveMemoryWarning()
